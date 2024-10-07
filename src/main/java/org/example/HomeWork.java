@@ -1,6 +1,9 @@
 package org.example;
 
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 public class HomeWork {
@@ -24,8 +27,37 @@ public class HomeWork {
      * Сигнатуру метода не меняем
      */
     public String findMaxSubstring(String str) {
-        //TODO реализовать метод
-        return null;
+        var input = str.toCharArray();
+        Map<Character, Integer> map = new LinkedHashMap<>();
+        Set<String> strs = new LinkedHashSet<>();
+
+        int pos = 0;
+        while (pos < input.length - 1) {
+            for (int i = pos; i < input.length; i++) {
+                if (!map.containsKey(input[i])) {
+                    map.put(input[i], i);
+                } else {
+                    pos = map.get(input[i]) + 1;
+                    strs.add(getString(map.keySet()));
+                    map.clear();
+                    map.put(input[i], i);
+                }
+            }
+        }
+        strs.add(getString(map.keySet()));
+        var result = "";
+        for (String s : strs) {
+            if (result.length() < s.length()) {
+                result = s;
+            }
+        }
+        return result;
+    }
+
+    private static String getString(Set<Character> ch) {
+        var result = new StringBuilder();
+        ch.forEach(result::append);
+        return result.toString();
     }
 
 
